@@ -8,6 +8,7 @@
     "reset": "pnpm clean && pnpm i",
     "clean": "pnpm dlx rimraf node_modules",
     "build": "vue-tsc && vite build",
+    "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
