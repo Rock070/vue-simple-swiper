@@ -21,8 +21,8 @@ const items = Array.from({ length: 20 }, (_, index) => index)
 const options = reactive<SwiperProps>({
   perView: 3,
   gap: 20,
-  height: 400,
-  width: 1200,
+  height: 300,
+  width: 800,
   direction: 'y',
   isPagination: true,
   isArrow: true,
@@ -32,7 +32,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 
 <template>
   <div class="demo">
-    <h1 class="font-bold text-5xl mb-10">
+    <h1 class="font-bold text-5xl mb-14">
       Simple Swiper Demo
     </h1>
     <div class="mb-10">
