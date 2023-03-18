@@ -105,7 +105,7 @@ const goPage = (type: 'previous' | 'next') => {
   onChangePagination(index)
 }
 
-const onIconClick = useThrottleFn(goPage, 200)
+const onIconClick = useThrottleFn(goPage, 100)
 
 onMounted(() => {
   if (swiperSlideRefs.value) {
