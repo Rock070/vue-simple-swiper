@@ -5,9 +5,19 @@ import { useToggle } from '@vueuse/core'
 import Swiper from '@/components/Swiper.vue'
 import Block from '@/components/Block.vue'
 
+export interface SwiperProps {
+  gap?: number
+  width?: number
+  height?: number
+  direction?: 'x' | 'y'
+  perView?: number
+  isPagination?: boolean
+  isArrow?: boolean
+}
+
 const items = Array.from({ length: 20 }, (_, index) => index)
 
-const options = reactive({
+const options = reactive<SwiperProps>({
   perView: 3,
   gap: 20,
   height: 400,

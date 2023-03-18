@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import type { CSSProperties } from 'vue'
 import { useEventListener, useIntersectionObserver, useScroll, useThrottleFn } from '@vueuse/core'
+
 import type { UseScrollReturn } from '@vueuse/core'
 
 export interface SwiperProps {
@@ -176,7 +178,7 @@ const swiperStyle = computed(() => {
     'width': `${props.width}px`,
     'height': `${props.height}px`,
 
-    'flex-direction': props.direction === 'x' ? 'row' : 'column',
+    'flex-direction': props.direction === 'x' ? 'row' : 'column' as CSSProperties['flex-direction'],
 
     'gap': `${props.gap}px ${props.gap}px`,
 
