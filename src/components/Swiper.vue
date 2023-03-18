@@ -269,7 +269,6 @@ defineExpose({
 }
 
 .swiper-slide {
-  /* margin: 0 var(--slide-margin); */
   width: var(--slide-width);
   height: var(--slide-height);
 }
