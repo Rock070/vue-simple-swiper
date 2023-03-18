@@ -4,6 +4,7 @@ specifiers:
   '@antfu/eslint-config': ^0.35.3
   '@iconify/vue': ^4.0.2
   '@types/node': ^16.11.0
+  '@unocss/reset': ^0.50.6
   '@unocss/transformer-directives': ^0.50.6
   '@vitejs/plugin-vue': ^3.2.0
   '@vueuse/core': ^9.9.0
@@ -19,6 +20,7 @@ specifiers:
   vue-tsc: ^1.0.9
 
 dependencies:
+  '@unocss/reset': 0.50.6
   '@vueuse/core': 9.9.0_vue@3.2.45
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
@@ -663,7 +665,6 @@ packages:
 
   /@unocss/reset/0.50.6:
     resolution: {integrity: sha512-e1fuSEgp1p7FgpsIZKNejOKgq4gyZcDGDvi+6544x458hInM6MfiMQNP95UBJEG4JZXq6qCZ8t7tRVWS2m5IXg==}
-    dev: true
 
   /@unocss/scope/0.50.6:
     resolution: {integrity: sha512-ep1RRJzA3xbVmEcsBYvY8i/LQIfoCFaw1bx9hvGLhdCIdboy58sL4R4GigOukBJiufykKkrLNzFmlIsi3EfJWg==}
