@@ -11,3 +11,5 @@
 - 可點擊左右 Icon 切換幻燈片
 - 可點擊下方頁籤切換幻燈片
 - 可用鍵盤左右方向鍵切換幻燈片
+
+### Demo: [https://vue-simple-swiper.vercel.app/](https://vue-simple-swiper.vercel.app/)
