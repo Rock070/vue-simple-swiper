@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
-import { useIntersectionObserver, useScroll } from '@vueuse/core'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { useEventListener, useIntersectionObserver, useScroll, useThrottleFn } from '@vueuse/core'
 import type { UseScrollReturn } from '@vueuse/core'
 
 export interface SwiperOptions {
@@ -37,14 +37,12 @@ const pagination = reactive({
   current: 1,
   total: totalPages,
 })
+
 const scrollImpl = (index: number) => {
-  nextTick(() => {
-    const target = swiperRef.value?.children?.[index] as Element
+  const target = swiperRef.value?.children?.[index] as Element
 
-    if (target && target.scrollIntoView)
-
-      target?.scrollIntoView({ block: 'start', behavior: 'smooth', inline: 'start' })
-  })
+  if (target && target.scrollIntoView)
+    target.scrollIntoView({ inline: 'start' })
 }
 
 const onChangePagination = (page: number) => {
@@ -73,20 +71,22 @@ const { directions } = useScroll(swiperRef, {
       const targetPage = Math.abs(scrollEndPage.value - props.options.perView) + 1
       onChangePagination(targetPage)
     }
+
     scrollEndPage.value = null
     direction.value = null
   },
 })
 
-const onClickIcon = (type: 'left' | 'right') => {
+const goPage = (type: 'previous' | 'next') => {
   let index = 0
-  if (type === 'right') {
+
+  if (type === 'next') {
     if (pagination.current === totalPages.value)
       index = 1
     else
       index = pagination.current + 1
   }
-  else if (type === 'left') {
+  else if (type === 'previous') {
     if (pagination.current === 1)
       index = totalPages.value
     else
@@ -95,6 +95,8 @@ const onClickIcon = (type: 'left' | 'right') => {
 
   onChangePagination(index)
 }
+
+const onIconClick = useThrottleFn(goPage, 200)
 
 onMounted(() => {
   if (swiperSlideRefs.value) {
@@ -120,29 +122,47 @@ onMounted(() => {
     })
   }
 })
+
+const KEY_DOWN_PREVENT_KEY_CODE_LIST = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
+
+useEventListener(swiperRef, 'keydown', useThrottleFn((e: KeyboardEvent) => {
+  if (KEY_DOWN_PREVENT_KEY_CODE_LIST.includes(e.code))
+    e.preventDefault()
+
+  if (e.code === 'ArrowRight')
+    goPage('next')
+
+  else if (e.code === 'ArrowLeft')
+    goPage('previous')
+}, 100))
+
+defineExpose({
+  swiperRef,
+})
 </script>
 
 <template>
   <div>
-    <!-- go left page -->
     <div class="flex items-center space-x-5">
-      <button type="button" @click="onClickIcon('left')">
+      <!-- go left page -->
+      <button type="button" @click="onIconClick('previous')">
         <Icon icon="material-symbols:arrow-back-ios-new-rounded" />
       </button>
       <!-- container -->
       <div
         ref="swiperRef"
-        class="shrink-0 w-[790px] overflow-x-auto flex space-x-4 swiper-container"
+        class="shrink-0 w-[780px] overflow-x-auto flex space-x-4 swiper-container"
+        tabindex="0"
       >
         <template v-for="(item, index) in items" :key="item">
-          <div ref="swiperSlideRefs" :data-index="index">
+          <div ref="swiperSlideRefs" :data-index="index" class="inline-block">
             <slot :index="index" :item="item" />
           </div>
         </template>
       </div>
 
       <!-- go right page -->
-      <button type="button" @click="onClickIcon('right')">
+      <button type="button" @click="onIconClick('next')">
         <Icon icon="material-symbols:arrow-forward-ios-rounded" />
       </button>
     </div>
@@ -161,6 +181,7 @@ onMounted(() => {
 .swiper-container {
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
+
 }
 
 .swiper-container > * {
