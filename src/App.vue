@@ -1,30 +1,24 @@
 <script setup lang="ts">
 import Swiper from '@/components/Swiper.vue'
+import Block from '@/components/Block.vue'
+
+const items = Array.from({ length: 20 }, (_, index) => index)
+
+const options = {
+  perView: 3,
+  gap: '10px',
+}
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo">
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo">
-    </a>
+    <h1 class="font-bold text-2xl mb-10">
+      Simple Swiper Demo
+    </h1>
+    <Swiper :items="items" :options="options">
+      <template #default="{ item }">
+        <Block>{{ item + 1 }}</Block>
+      </template>
+    </Swiper>
   </div>
-  <Swiper />
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
