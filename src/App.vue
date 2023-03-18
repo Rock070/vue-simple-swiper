@@ -9,8 +9,8 @@ const items = Array.from({ length: 20 }, (_, index) => index)
 
 const options = reactive({
   perView: 3,
-  gap: 10,
-  width: 400,
+  gap: 20,
+  width: 1200,
 })
 
 const onFocusSwiper = () => {

@@ -15,8 +15,8 @@ export type Direction = keyof UseScrollReturn['directions']
 
 const props = withDefaults(defineProps<SwiperProps>(), {
   items: () => [],
-  width: 400,
-  gap: 20,
+  width: 800,
+  gap: 10,
   perView: 3,
 })
 
@@ -135,8 +135,8 @@ useEventListener(swiperRef, 'keydown', useThrottleFn((e: KeyboardEvent) => {
 const outerStyle = computed(() => {
   const swiperWidth = props.width
 
-  const ICON_WIDTH = 16
-  const ICON_GAP = 20
+  const ICON_WIDTH = 32
+  const ICON_GAP = 8
 
   const width = swiperWidth + ((ICON_WIDTH + ICON_GAP) * 2)
 
@@ -163,9 +163,13 @@ defineExpose({
 
 <template>
   <div :style="outerStyle">
-    <div class="flex items-center space-x-5">
+    <div class="flex items-center space-x-2">
       <!-- go left page -->
-      <button type="button" @click="onIconClick('previous')">
+      <button
+        type="button"
+        class="p-2"
+        @click="onIconClick('previous')"
+      >
         <Icon icon="material-symbols:arrow-back-ios-new-rounded" />
       </button>
       <!-- container -->
@@ -188,7 +192,11 @@ defineExpose({
       </div>
 
       <!-- go right page -->
-      <button type="button" @click="onIconClick('next')">
+      <button
+        type="button"
+        class="p-2"
+        @click="onIconClick('next')"
+      >
         <Icon icon="material-symbols:arrow-forward-ios-rounded" />
       </button>
     </div>
