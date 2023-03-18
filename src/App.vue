@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { Icon } from '@iconify/vue'
 
 import Swiper from '@/components/Swiper.vue'
 import WorkTable from '@/components/WorkTable.vue'
@@ -32,6 +33,9 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 
 <template>
   <div class="demo">
+    <a type="button" href="https://github.com/Rock070/vue-simple-swiper" target="_blank" rel="noreferrer noopener">
+      <Icon icon="mdi:github" class="absolute right-4 top-4 h-6 w-6" />
+    </a>
     <h1 class="font-bold text-5xl mb-14">
       Simple Swiper Demo
     </h1>
