@@ -132,7 +132,7 @@ onMounted(() => {
       <!-- container -->
       <div
         ref="swiperRef"
-        class="shrink-0 w-780px overflow-x-auto flex space-x-4 swiper-container"
+        class="shrink-0 w-[790px] overflow-x-auto flex space-x-4 swiper-container"
       >
         <template v-for="(item, index) in items" :key="item">
           <div ref="swiperSlideRefs" :data-index="index">
