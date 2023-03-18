@@ -27,11 +27,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 relative">
     <button type="button" class="border-light-400 border border-solid p-4" @click="onFocusSwiper">
       Click me to use keyboard  ← & →  control slider
     </button>
-    <div v-if="isFocus">
+    <div v-if="isFocus" class="absolute -bottom-8 left-1/2 -translate-x-1/2">
       Now use ← & → to change slider
     </div>
   </div>

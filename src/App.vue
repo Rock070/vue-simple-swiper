@@ -35,7 +35,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
     <h1 class="font-bold text-5xl mb-14">
       Simple Swiper Demo
     </h1>
-    <div class="mb-10">
+    <div class="mb-12 ">
       <!-- 控制台 -->
       <WorkTable :options="options" />
 

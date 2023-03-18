@@ -147,14 +147,29 @@ useEventListener(swiperRef, 'keydown', useThrottleFn((e: KeyboardEvent) => {
 
 const outerStyle = computed(() => {
   const swiperWidth = props.width
+  const swiperHeight = props.height
 
   const ICON_WIDTH = 32
   const ICON_GAP = 8
 
-  const width = swiperWidth + ((ICON_WIDTH + ICON_GAP) * 2)
+  const width
+  = (() => {
+    if (props.isArrow)
+      return swiperWidth + ((ICON_WIDTH + ICON_GAP) * 2)
+    return swiperWidth
+  })()
+
+  const height
+  = (() => {
+    if (props.isPagination)
+      return swiperHeight + ((ICON_WIDTH + ICON_GAP) * 2)
+
+    return swiperHeight
+  })()
 
   return {
     width: `${width}px`,
+    height: `${height}px`,
   }
 })
 
