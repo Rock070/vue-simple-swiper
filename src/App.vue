@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
 import Swiper from '@/components/Swiper.vue'
@@ -27,6 +27,14 @@ const options = reactive<SwiperProps>({
   direction: 'y',
   isPagination: true,
   isArrow: true,
+})
+
+onMounted(() => {
+  const height = Math.floor(innerHeight * 0.3)
+  const width = Math.floor(innerWidth * 0.7)
+
+  options.width = width
+  options.height = height
 })
 const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 </script>
