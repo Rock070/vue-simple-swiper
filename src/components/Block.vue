@@ -1,15 +1,11 @@
-<script setup lang="ts">
-//
-</script>
-
 <template>
-  <div class="block">
+  <div class="block-component">
     <slot />
   </div>
 </template>
 
 <style>
-.block {
-  @apply inline-block py-30 w-full bg-gray-500;
+.block-component {
+  @apply p-2 w-full h-full bg-sky-400;
 }
 </style>
