@@ -24,8 +24,8 @@ const props = withDefaults(defineProps<SwiperProps>(), {
   }),
 })
 
-const swiperRef = ref<HTMLElement>(null)
-const swiperSlideRefs = ref<HTMLElement[]>(null)
+const swiperRef = ref<HTMLElement | null>(null)
+const swiperSlideRefs = ref<HTMLElement[] | null>(null)
 const totalPages = computed(() => {
   return props.items.length - props.options.perView + 1
 })
@@ -101,6 +101,7 @@ onMounted(() => {
     swiperSlideRefs.value.forEach((el) => {
       const { stop } = useIntersectionObserver(
         el,
+        // @ts-expect-error 型別待補強
         ([{ isIntersecting, target: _target }]) => {
           const target = _target as HTMLElement
           if (isIntersecting) {
