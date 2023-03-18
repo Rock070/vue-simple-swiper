@@ -4,30 +4,26 @@ import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useEventListener, useIntersectionObserver, useScroll, useThrottleFn } from '@vueuse/core'
 import type { UseScrollReturn } from '@vueuse/core'
 
-export interface SwiperOptions {
-  gap: string
-  perView: number
-}
-
 export interface SwiperProps {
   items: any[]
-  options: SwiperOptions
+  gap?: number
+  width?: number
+  perView?: number
 }
 
 export type Direction = keyof UseScrollReturn['directions']
 
 const props = withDefaults(defineProps<SwiperProps>(), {
   items: () => [],
-  options: () => ({
-    gap: '10px',
-    perView: 3,
-  }),
+  width: 400,
+  gap: 20,
+  perView: 3,
 })
 
 const swiperRef = ref<HTMLElement | null>(null)
 const swiperSlideRefs = ref<HTMLElement[] | null>(null)
 const totalPages = computed(() => {
-  return props.items.length - props.options.perView + 1
+  return props.items.length - props.perView + 1
 })
 
 const direction = ref<Direction | null>(null)
@@ -68,7 +64,7 @@ const { directions } = useScroll(swiperRef, {
       onChangePagination(scrollEndPage.value)
     }
     else if (direction.value === 'right') {
-      const targetPage = Math.abs(scrollEndPage.value - props.options.perView) + 1
+      const targetPage = Math.abs(scrollEndPage.value - props.perView) + 1
       onChangePagination(targetPage)
     }
 
@@ -136,13 +132,37 @@ useEventListener(swiperRef, 'keydown', useThrottleFn((e: KeyboardEvent) => {
     goPage('previous')
 }, 100))
 
+const outerStyle = computed(() => {
+  const swiperWidth = props.width
+
+  const ICON_WIDTH = 16
+  const ICON_GAP = 20
+
+  const width = swiperWidth + ((ICON_WIDTH + ICON_GAP) * 2)
+
+  return {
+    width: `${width}px`,
+  }
+})
+
+const swiperStyle = computed(() => {
+  const totalGapWidth = props.gap * (props.perView - 1)
+  const slideWidth = (props.width - totalGapWidth) / props.perView
+
+  return {
+    'width': `${props.width}px`,
+    '--slide-margin': `${props.gap / 2}px`,
+    '--slide-width': `${slideWidth}px`,
+  }
+})
+
 defineExpose({
   swiperRef,
 })
 </script>
 
 <template>
-  <div>
+  <div :style="outerStyle">
     <div class="flex items-center space-x-5">
       <!-- go left page -->
       <button type="button" @click="onIconClick('previous')">
@@ -151,11 +171,17 @@ defineExpose({
       <!-- container -->
       <div
         ref="swiperRef"
-        class="shrink-0 w-[780px] overflow-x-auto flex space-x-4 swiper-container"
+        role="slider"
+        class="shrink-0 overflow-x-auto flex swiper-container"
+        :style="swiperStyle"
         tabindex="0"
       >
         <template v-for="(item, index) in items" :key="item">
-          <div ref="swiperSlideRefs" :data-index="index" class="inline-block">
+          <div
+            ref="swiperSlideRefs"
+            :data-index="index"
+            class="swiper-slide inline-block shrink-0 overflow-auto"
+          >
             <slot :index="index" :item="item" />
           </div>
         </template>
@@ -168,7 +194,7 @@ defineExpose({
     </div>
 
     <!-- pagination -->
-    <div>
+    <div class="mx-auto w-full">
       <button v-for="page in totalPages" :key="page" type="button" @click="onChangePagination(page)">
         <Icon v-if="pagination.current === page" icon="bi:dot" width="40" />
         <Icon v-else icon="ph:dot-outline-light" width="40" />
@@ -181,10 +207,22 @@ defineExpose({
 .swiper-container {
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
-
 }
 
 .swiper-container > * {
   scroll-snap-align: start;
+}
+
+.swiper-slide {
+  margin: 0 var(--slide-margin);
+  width: var(--slide-width);
+}
+
+.swiper-slide:first-child {
+  margin-left: 0;
+}
+
+.swiper-slide:last-child {
+  margin-right: 0;
 }
 </style>

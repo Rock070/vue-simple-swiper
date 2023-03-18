@@ -10,6 +10,6 @@
 
 <style>
 .block {
-  @apply inline-block p-30 bg-gray-500;
+  @apply inline-block py-30 w-full bg-gray-500;
 }
 </style>
