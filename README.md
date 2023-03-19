@@ -1,6 +1,6 @@
 # Vue Simple Swiper
 
-嘗試用以下方法製作簡易 vue3 輪播功能
+練習用以下方法製作簡易 vue3 輪播功能
 
 - scroll-snap-type
 - scrollIntoView
