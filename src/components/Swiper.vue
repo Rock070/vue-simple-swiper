@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import type { CSSProperties } from 'vue'
 import { useEventListener, useIntersectionObserver, useScroll, useThrottleFn } from '@vueuse/core'
 
@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<SwiperProps>(), {
 const swiperRef = ref<HTMLElement | null>(null)
 const swiperSlideRefs = ref<HTMLElement[] | null>(null)
 const totalPages = computed(() => {
+  if (props.items.length <= props.perView)
+    return 1
   return props.items.length - props.perView + 1
 })
 
@@ -209,6 +211,12 @@ const iconClass = computed(() => {
   }
 })
 
+watch(props, () => {
+  setTimeout(() => {
+    onChangePagination(1)
+  }, 100)
+})
+
 defineExpose({
   swiperRef,
 })
@@ -216,6 +224,7 @@ defineExpose({
 
 <template>
   <div :style="outerStyle">
+    {{ pagination.current }}
     <div
       class="flex items-center gap-2"
       :style="{
@@ -240,7 +249,7 @@ defineExpose({
         :style="swiperStyle"
         tabindex="0"
       >
-        <template v-for="(item, index) in items" :key="item">
+        <template v-for="(item, index) in items" :key="`vue-simple-swiper${String(item)}`">
           <div
             ref="swiperSlideRefs"
             :data-index="index"

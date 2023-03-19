@@ -8,6 +8,7 @@ import FocusButton from '@/components/FocusButton.vue'
 import Block from '@/components/Block.vue'
 
 export interface SwiperProps {
+  items: any[]
   gap?: number
   width?: number
   height?: number
@@ -20,11 +21,12 @@ export interface SwiperProps {
 const items = Array.from({ length: 20 }, (_, index) => index)
 
 const options = reactive<SwiperProps>({
+  items,
   perView: 3,
   gap: 20,
   height: 300,
   width: 800,
-  direction: 'y',
+  direction: 'x',
   isPagination: true,
   isArrow: true,
 })
@@ -58,7 +60,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
     <div class="swiper-outer flex-center">
       <Swiper ref="swiperRootRef" :items="items" v-bind="options">
         <template #default="{ item }">
-          <Block class="flex-center h-full">
+          <Block class="flex-center h-full text-white">
             {{ item + 1 }}
           </Block>
         </template>

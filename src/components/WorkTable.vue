@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 
 export interface Options {
+  items: any[]
   gap?: number
   width?: number
   height?: number
@@ -18,10 +19,27 @@ export interface WorkTableProps {
 const props = defineProps<WorkTableProps>()
 
 const values = toRefs(props)
+
+const itemLength = computed({
+  get() {
+    return values.options.value.items.length
+  },
+  set(val) {
+    values.options.value.items = Array.from({ length: val }, (_, index) => index)
+  },
+})
 </script>
 
 <template>
   <div class="mb-10 grid grid-cols-3 gap-y-6">
+    <div class="flex-center">
+      <label for="items">Items Length：</label>
+      <input id="items" v-model="itemLength" type="number">
+    </div>
+    <div class="flex-center">
+      <label for="perView">per view：</label>
+      <input id="perView" v-model="values.options.value.perView" type="number">
+    </div>
     <div class="flex-center">
       <label for="gap">gap：</label>
       <input id="gap" v-model="values.options.value.gap" type="number">
