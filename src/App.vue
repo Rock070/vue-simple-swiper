@@ -21,7 +21,7 @@ export interface SwiperProps {
 
 const itemList = Array.from({ length: 20 }, (_, index) => index)
 
-const { lg } = useBreakpoints({
+const { md } = useBreakpoints({
   'sm': 640,
   'md': 768,
   'lg': 1024,
@@ -68,7 +68,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
       <WorkTable :options="options" />
 
       <!-- focus button -->
-      <FocusButton v-if="lg" />
+      <FocusButton v-if="md" />
     </div>
 
     <div class="swiper-outer flex-center">
