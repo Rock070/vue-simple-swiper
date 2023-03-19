@@ -23,9 +23,9 @@ const items = Array.from({ length: 20 }, (_, index) => index)
 const options = reactive<SwiperProps>({
   items,
   perView: 3,
-  gap: 20,
+  gap: 10,
   height: 300,
-  width: 800,
+  width: 700,
   direction: 'x',
   isPagination: true,
   isArrow: true,
@@ -54,7 +54,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
     <h1 class="font-bold text-5xl mb-14">
       Simple Swiper Demo
     </h1>
-    <div class="mb-12 ">
+    <div :class="options.direction === 'x' ? 'mb-12' : 'mb-6'">
       <!-- 控制台 -->
       <WorkTable :options="options" />
 

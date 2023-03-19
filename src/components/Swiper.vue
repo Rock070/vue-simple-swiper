@@ -49,14 +49,16 @@ const pagination = reactive({
   total: totalPages,
 })
 
-const scrollImpl = (index: number, behavior: ScrollBehavior = 'smooth') => {
+const scrollImpl = useThrottleFn((index: number, behavior: ScrollBehavior = 'smooth') => {
   const target = swiperRef.value?.children?.[index] as Element
 
   if (target && target.scrollIntoView)
     target.scrollIntoView({ inline: 'start', behavior })
-}
+}, 200)
 
 const onChangePagination = (page: number, behavior: ScrollBehavior = 'smooth') => {
+  if (pagination.current === page)
+    return
   pagination.current = page
   scrollImpl(page - 1, behavior)
 }
@@ -203,10 +205,11 @@ const makeInterSectionObserver = () => {
           if (isIntersecting) {
             const index = Number(target.dataset.index)
             const page = Math.floor(index + 1)
+
             scrollEndPage.value = page
           }
         },
-        { threshold: 0.75, root: swiperRef.value, rootMargin: '20px' },
+        { threshold: 0.85, root: swiperRef.value },
       )
 
       stopList.push(stop)
@@ -214,7 +217,10 @@ const makeInterSectionObserver = () => {
   }
 }
 
-const stopImpl = () => {
+/**
+ * 停止 IntersectionObserver
+ */
+const stopInterSectionObserverImpl = () => {
   if (stopList && stopList.length)
     stopList.forEach(fn => fn())
 
@@ -222,14 +228,16 @@ const stopImpl = () => {
 }
 
 onUnmounted(() => {
-  stopImpl()
+  stopInterSectionObserverImpl()
 })
 
 watch(props, () => {
-  stopImpl()
+  stopInterSectionObserverImpl()
 
   // 避免與 smoothScroll 的動畫衝突
   setTimeout(() => {
+    nowScrollDirection.value = null
+    scrollEndPage.value = null
     onChangePagination(1, 'instant')
     makeInterSectionObserver()
   }, 100)
