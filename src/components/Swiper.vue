@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { computed, onUnmounted, reactive, ref, watch } from 'vue'
 import type { CSSProperties } from 'vue'
 import { useEventListener, useIntersectionObserver, useScroll, useThrottleFn } from '@vueuse/core'
 
@@ -49,16 +49,16 @@ const pagination = reactive({
   total: totalPages,
 })
 
-const scrollImpl = (index: number) => {
+const scrollImpl = (index: number, behavior: ScrollBehavior = 'smooth') => {
   const target = swiperRef.value?.children?.[index] as Element
 
   if (target && target.scrollIntoView)
-    target.scrollIntoView({ inline: 'start' })
+    target.scrollIntoView({ inline: 'start', behavior })
 }
 
-const onChangePagination = (page: number) => {
+const onChangePagination = (page: number, behavior: ScrollBehavior = 'smooth') => {
   pagination.current = page
-  scrollImpl(page - 1)
+  scrollImpl(page - 1, behavior)
 }
 
 const { directions } = useScroll(swiperRef, {
@@ -75,6 +75,7 @@ const { directions } = useScroll(swiperRef, {
   onStop() {
     if (!nowScrollDirection.value || !scrollEndPage.value)
       return
+
     if (['left', 'top'].includes(nowScrollDirection.value)) {
       onChangePagination(scrollEndPage.value)
     }
@@ -108,31 +109,6 @@ const goPage = (type: 'previous' | 'next') => {
 }
 
 const onIconClick = useThrottleFn(goPage, 100)
-
-onMounted(() => {
-  if (swiperSlideRefs.value) {
-    swiperSlideRefs.value.forEach((el) => {
-      const { stop } = useIntersectionObserver(
-        el,
-        // @ts-expect-error 型別待補強
-        ([{ isIntersecting, target: _target }]) => {
-          const target = _target as HTMLElement
-          if (isIntersecting) {
-            const index = Number(target.dataset.index)
-            const page = Math.floor(index + 1)
-            scrollEndPage.value = page
-          }
-        },
-        { threshold: 0.75, root: swiperRef.value, rootMargin: '20px' },
-      )
-
-      // 確認這樣做的正確性
-      onUnmounted(() => {
-        stop()
-      })
-    })
-  }
-})
 
 const KEY_DOWN_PREVENT_KEY_CODE_LIST = ['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']
 
@@ -214,9 +190,48 @@ const iconClass = computed(() => {
   }
 })
 
+const stopList: ReturnType<typeof watch>[] = []
+
+const makeInterSectionObserver = () => {
+  if (swiperSlideRefs.value) {
+    swiperSlideRefs.value?.forEach((el) => {
+      const { stop } = useIntersectionObserver(
+        el,
+        // @ts-expect-error 型別待補強
+        ([{ isIntersecting, target: _target }]) => {
+          const target = _target as HTMLElement
+          if (isIntersecting) {
+            const index = Number(target.dataset.index)
+            const page = Math.floor(index + 1)
+            scrollEndPage.value = page
+          }
+        },
+        { threshold: 0.75, root: swiperRef.value, rootMargin: '20px' },
+      )
+
+      stopList.push(stop)
+    })
+  }
+}
+
+const stopImpl = () => {
+  if (stopList && stopList.length)
+    stopList.forEach(fn => fn())
+
+  stopList.length = 0
+}
+
+onUnmounted(() => {
+  stopImpl()
+})
+
 watch(props, () => {
+  stopImpl()
+
+  // 避免與 smoothScroll 的動畫衝突
   setTimeout(() => {
-    onChangePagination(1)
+    onChangePagination(1, 'instant')
+    makeInterSectionObserver()
   }, 100)
 })
 
@@ -227,7 +242,6 @@ defineExpose({
 
 <template>
   <div :style="outerStyle">
-    {{ pagination.current }}
     <div
       class="flex items-center gap-2"
       :style="{
