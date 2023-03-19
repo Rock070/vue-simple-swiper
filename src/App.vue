@@ -88,6 +88,8 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 }
 
 .demo input {
+  @apply text-black
   @apply px-3
+  @apply border-dark-50 border border-solid
 }
 </style>
