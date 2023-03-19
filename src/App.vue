@@ -32,7 +32,7 @@ const options = reactive<SwiperProps>({
 })
 
 onMounted(() => {
-  const height = Math.floor(innerHeight * 0.3)
+  const height = Math.floor(innerHeight * 0.3 * 0.7)
   const width = Math.floor(innerWidth * 0.7)
 
   options.width = width
