@@ -51,7 +51,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
     >
       <Icon icon="mdi:github" class="h-8 w-8" />
     </a>
-    <h1 class="font-bold text-5xl mb-14">
+    <h1 class="font-bold text-2xl md:text-3xl lg:text-5xl mb-8 lg:mb-14">
       Simple Swiper Demo
     </h1>
     <div :class="options.direction === 'x' ? 'mb-12' : 'mb-6'">
@@ -84,7 +84,8 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 }
 
 .demo label, .demo h3 {
-  @apply text-xl font-bold
+  @apply lg:text-xl md:text-lg text-md
+  @apply font-bold
 }
 
 .demo input {
