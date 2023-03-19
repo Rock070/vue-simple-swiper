@@ -18,10 +18,10 @@ export interface SwiperProps {
   isArrow?: boolean
 }
 
-const items = Array.from({ length: 20 }, (_, index) => index)
+const itemList = Array.from({ length: 20 }, (_, index) => index)
 
 const options = reactive<SwiperProps>({
-  items,
+  items: [...itemList],
   perView: 3,
   gap: 10,
   height: 300,
@@ -63,7 +63,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
     </div>
 
     <div class="swiper-outer flex-center">
-      <Swiper ref="swiperRootRef" :items="items" v-bind="options">
+      <Swiper ref="swiperRootRef" v-bind="options">
         <template #default="{ item }">
           <Block class="flex-center h-full text-white">
             {{ item + 1 }}

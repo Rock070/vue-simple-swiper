@@ -238,6 +238,8 @@ watch(props, () => {
   setTimeout(() => {
     nowScrollDirection.value = null
     scrollEndPage.value = null
+
+    // @ts-expect-error 不確定的錯誤
     onChangePagination(1, 'instant')
     makeInterSectionObserver()
   }, 100)
