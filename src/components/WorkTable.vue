@@ -34,19 +34,39 @@ const itemLength = computed({
   <div class="mb-10 grid gap-y-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
     <div class="flex-center">
       <label for="items">Items Length：</label>
-      <input id="items" v-model="itemLength" type="number">
+      <input
+        id="items"
+        v-model="itemLength"
+        inputmode="numeric"
+        type="number"
+      >
     </div>
     <div class="flex-center">
       <label for="perView">per view：</label>
-      <input id="perView" v-model="values.options.value.perView" type="number">
+      <input
+        id="perView"
+        v-model="values.options.value.perView"
+        inputmode="numeric"
+        type="number"
+      >
     </div>
     <div class="flex-center">
       <label for="gap">gap：</label>
-      <input id="gap" v-model="values.options.value.gap" type="number">
+      <input
+        id="gap"
+        v-model="values.options.value.gap"
+        inputmode="numeric"
+        type="number"
+      >
     </div>
     <div class="flex-center">
       <label for="height">height：</label>
-      <input id="height" v-model="values.options.value.height" type="number">
+      <input
+        id="height"
+        v-model="values.options.value.height"
+        inputmode="numeric"
+        type="number"
+      >
     </div>
     <div class="flex-center space-x-4">
       <h3>direction：</h3>
@@ -61,7 +81,12 @@ const itemLength = computed({
     </div>
     <div class="flex-center">
       <label for="width">width：</label>
-      <input id="width" v-model="values.options.value.width" type="number">
+      <input
+        id="width"
+        v-model="values.options.value.width"
+        inputmode="numeric"
+        type="number"
+      >
     </div>
     <div class="flex-center space-x-4">
       <h3>isPagination：</h3>
