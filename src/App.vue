@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
+import { useBreakpoints } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 
 import Swiper from '@/components/Swiper.vue'
@@ -19,6 +20,14 @@ export interface SwiperProps {
 }
 
 const itemList = Array.from({ length: 20 }, (_, index) => index)
+
+const { lg } = useBreakpoints({
+  'sm': 640,
+  'md': 768,
+  'lg': 1024,
+  'xl': 1280,
+  '2xl': 1536,
+})
 
 const options = reactive<SwiperProps>({
   items: [...itemList],
@@ -59,7 +68,7 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
       <WorkTable :options="options" />
 
       <!-- focus button -->
-      <FocusButton />
+      <FocusButton v-if="lg" />
     </div>
 
     <div class="swiper-outer flex-center">
