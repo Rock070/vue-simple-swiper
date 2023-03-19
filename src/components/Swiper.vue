@@ -9,8 +9,8 @@ import type { UseScrollReturn } from '@vueuse/core'
 export interface SwiperProps {
   items: any[]
   gap?: number
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
   direction?: 'x' | 'y'
   perView?: number
   isPagination?: boolean
@@ -148,8 +148,8 @@ useEventListener(swiperRef, 'keydown', useThrottleFn((e: KeyboardEvent) => {
 }, 100))
 
 const outerStyle = computed(() => {
-  const swiperWidth = props.width
-  const swiperHeight = props.height
+  const swiperWidth = Number(props.width)
+  const swiperHeight = Number(props.height)
 
   const ICON_WIDTH = 32
   const ICON_GAP = 8
@@ -176,24 +176,27 @@ const outerStyle = computed(() => {
 })
 
 const swiperStyle = computed(() => {
+  const swiperWidth = Number(props.width)
+  const swiperHeight = Number(props.height)
+
   const totalGapPx = props.gap * (props.perView - 1)
   const slideWidth = (() => {
     if (props.direction === 'x')
-      return (props.width - totalGapPx) / props.perView
+      return (swiperWidth - totalGapPx) / props.perView
     else if (props.direction === 'y')
-      return props.width
+      return swiperWidth
   })()
 
   const slideHeight = (() => {
     if (props.direction === 'y')
-      return (props.height - totalGapPx) / props.perView
+      return (swiperHeight - totalGapPx) / props.perView
     else if (props.direction === 'x')
-      return props.height
+      return swiperHeight
   })()
 
   return {
-    'width': `${props.width}px`,
-    'height': `${props.height}px`,
+    'width': `${swiperWidth}px`,
+    'height': `${swiperHeight}px`,
 
     'flex-direction': props.direction === 'x' ? 'row' : 'column' as CSSProperties['flex-direction'],
 

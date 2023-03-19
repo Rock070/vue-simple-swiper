@@ -43,8 +43,13 @@ const swiperRootRef = ref<InstanceType<typeof Swiper>>()
 
 <template>
   <div class="demo">
-    <a type="button" href="https://github.com/Rock070/vue-simple-swiper" target="_blank" rel="noreferrer noopener">
-      <Icon icon="mdi:github" class="absolute right-4 top-4 h-6 w-6" />
+    <a
+      type="button"
+      href="https://github.com/Rock070/vue-simple-swiper"
+      target="_blank" rel="noreferrer noopener"
+      class="absolute right-4 top-4"
+    >
+      <Icon icon="mdi:github" class="h-8 w-8" />
     </a>
     <h1 class="font-bold text-5xl mb-14">
       Simple Swiper Demo
